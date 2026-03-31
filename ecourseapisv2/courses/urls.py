@@ -6,9 +6,8 @@ r = DefaultRouter()
 r.register('categories', views.CategoryViewSet, 'category')
 r.register('courses', views.CourseViewSet, 'course')
 r.register('lessons', views.LessonViewSet, 'lesson')
-r.register('users', views.UserViewSet, 'users')
-
-
+r.register('users', views.UserViewSet, 'user')
+r.register('comments', views.CommentViewSet, 'comment')
 
 urlpatterns = [
     path('', include(r.urls)),
