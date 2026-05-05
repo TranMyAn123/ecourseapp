@@ -1,34 +1,34 @@
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import Apis, { endpoints } from "../configs/Apis";
 import { Chip } from "react-native-paper";
 import Styles from "../styles/Styles";
 
-const Header = () => {
-
-    const[categories, setCategories] = useState([]);
+const Header = ({cateId, setCateId}) => {
+    const [categories, setCategories] = useState([]);
 
     const loadCategories = async () => {
-        try{
+        try {
             let res = await Apis.get(endpoints['categories']);
-            console.info(res.data)
             setCategories(res.data);
-        }catch(ex){
+        } catch (ex) {
             console.error(ex);
         }
-            
-        
     }
 
     useEffect(() => {
         loadCategories();
     }, []);
 
-    return(
+    return (
         <View style={[Styles.row, Styles.wrap]}>
-            {categories.map(c => <View style={Styles.padding} key={c.id}>
-                <Chip icon="label">{c.name}</Chip>
-            </View>)}
+            <TouchableOpacity onPress={() => setCateId(null)} style={Styles.padding}>
+                <Chip mode={cateId===null?"outlined":"flat"} icon="label">Tất cả</Chip>
+            </TouchableOpacity>
+
+            {categories.map(c => <TouchableOpacity onPress={() => setCateId(c.id)} style={Styles.padding}  key={`c${c.id}`}>
+                <Chip mode={cateId===c.id?"outlined":"flat"} icon="label">{c.name}</Chip>
+            </TouchableOpacity>)}
         </View>
     );
 }
